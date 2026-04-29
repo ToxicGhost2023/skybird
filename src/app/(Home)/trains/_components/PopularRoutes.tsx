@@ -10,39 +10,39 @@ const data = [
   { id: 6, name: "بلیط تهران دبی", src: "/images/airPlan/Dubai.webp" },
 ];
 
-function Popular() {
+function PopularRoutes() {
   return (
-    <section className="py-12 bg-linear-to-b from-white to-blue-50">
+    <section className="py-12 bg-linear-to-b from-white to-emerald-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="text-orange-500 font-bold text-sm bg-orange-100 px-4 py-1 rounded-full">
+          <span className="text-emerald-600 font-bold text-sm bg-emerald-100 px-4 py-1 rounded-full">
             پربازدیدترین مسیرها
           </span>
           <h2 className="text-4xl font-extrabold text-gray-800 mt-4">
-            پرطرفدار ترین ها
+            پرطرفدارترین خطوط ریلی
           </h2>
-          <p className="text-gray-500 mt-2">با اکسپرس فلای پرواز کن</p>
+          <p className="text-gray-500 mt-2">تجربه سفری لذت‌بخش با ریل‌باز</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {data.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group relative"
+              className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group border border-emerald-100"
             >
-              <div className="relative w-full h-64 sm:h-72 md:h-80">
+              <div className="relative w-full h-64 sm:h-72">
                 <Image
-                  width={800}
-                  height={800}
+                  width={500}
+                  height={500}
                   src={item.src}
                   alt={item.name}
-                  priority
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-blue-900/80 via-blue-800/40 to-transparent group-hover:from-blue-900/90 transition duration-500 flex items-end p-4">
-                  <span className="text-white text-lg sm:text-xl font-bold text-center w-full">
+                <div className="absolute inset-0 bg-linear-to-t from-emerald-900/80 via-emerald-800/40 to-transparent group-hover:from-emerald-900/90 transition-all duration-500 flex flex-col justify-end p-4">
+                  <span className="text-white text-lg font-bold text-right w-full drop-shadow-md">
                     {item.name}
                   </span>
+                  <div className="flex justify-between text-white text-xs mt-2 opacity-90"></div>
                 </div>
               </div>
             </div>
@@ -53,4 +53,4 @@ function Popular() {
   );
 }
 
-export default Popular;
+export default PopularRoutes;

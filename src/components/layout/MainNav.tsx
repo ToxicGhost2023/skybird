@@ -31,7 +31,7 @@ export default function MainNav() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    prefetch={true} 
+                    prefetch
                     className="group relative text-gray-700 px-3 py-2 md:px-4 md:py-2.5 
                              text-sm md:text-base font-medium rounded-lg
                              hover:bg-blue-50 hover:text-blue-600 
@@ -57,7 +57,7 @@ export default function MainNav() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    prefetch={true}
+                    prefetch
                     className="group relative text-gray-700 px-3 py-2 md:px-4 md:py-2.5 
                              text-sm md:text-base font-medium rounded-lg
                              hover:bg-blue-50 hover:text-blue-600 

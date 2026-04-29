@@ -1,62 +1,53 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
 import { searchFlightSchema } from "@/lib/validation/searchFlightSchema";
 
+export async function searchFlightAction(prevState: any, formData: FormData) {
+  const rawData = {
+    tripType: formData.get("tripType") || "one-way",
+    origin: formData.get("origin") as string,
+    destination: formData.get("destination") as string,
+    departureDate: formData.get("departureDate") as string,
+    returnDate: formData.get("returnDate") as string,
+    passengers: String(formData.get("passengers")),
+  };
 
-// اگر داری، جایگزینش کن
+  const parsed = searchFlightSchema.safeParse(rawData);
 
-export async function searchFlightAction(
-  prevState: any,
-  formData: FormData
-) {
-  try {
-    // تبدیل داده‌های ورودی فرم
-    const rawData = {
-      tripType: formData.get("tripType") || "one-way",
-      origin: formData.get("origin"),
-      destination: formData.get("destination"),
-      departureDate: formData.get("departureDate"),
-      returnDate: formData.get("returnDate"),
-      passengers: formData.get("passengers"),
-    };
-
-    // اعتبارسنجی Zod
-    const parsed = searchFlightSchema.safeParse(rawData);
-
-    if (!parsed.success) {
-      return {
-        success: false,
-        flights: [],
-        errors: parsed.error.flatten().fieldErrors,
-      };
-    }
-
-    const data = parsed.data;
-
-    // --- عملیات دیتابیس (مثال) ---
-    const flights = await clientPromise.flight.findMany({
-      where: {
-        origin: data.origin,
-        destination: data.destination,
-        date: data.departureDate,
-      },
-    });
-
+  if (!parsed.success) {
     return {
-      success: true,
-      flights,
-      errors: {},
+      success: false,
+      errors: parsed.error.flatten().fieldErrors,
     };
+  }
+
+  const data = parsed.data;
+
+  try {
+    const client = await clientPromise;
+    const db = client.db("skybird");
+
+    await db.collection("flightSearches").insertOne({
+      ...data,
+      createdAt: new Date(),
+    });
   } catch (error) {
-    console.error("searchFlightAction error:", error);
+    console.error("DB ERROR:", error);
 
     return {
       success: false,
-      flights: [],
-      errors: {
-        _global: ["خطای داخلی سرور. لطفاً دوباره تلاش کنید."],
-      },
+      errors: { _global: ["خطا در ذخیره اطلاعات"] },
     };
   }
+
+  const query = new URLSearchParams({
+    origin: data.origin,
+    destination: data.destination,
+    date: data.departureDate,
+    passengers: String(data.passengers),
+  });
+
+  redirect(`/flight/issuingTickets?${query}`);
 }

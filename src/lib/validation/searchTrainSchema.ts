@@ -11,7 +11,7 @@ const toEnglishDigits = (str: string) => {
   return str;
 };
 
-export const searchFlightSchema = z.object({
+export const searchTrainSchema = z.object({
   tripType: z.enum(["one-way", "round-trip"]),
   origin: z.string().min(1, "مبدا را انتخاب کنید"),
   destination: z.string().min(1, "مقصد را انتخاب کنید"),

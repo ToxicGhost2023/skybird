@@ -8,9 +8,10 @@ import {
   ArrowLeftRight,
   Search,
 } from "lucide-react";
-import CityModal from "../../../../components/ui/CityModal";
-import { searchFlightAction } from "../_actions/searchFlightAction";
-import JalaliDatePicker from "../../../../components/ui/JalaliDatePicker";
+
+import JalaliDatePicker from "@/components/ui/JalaliDatePicker";
+import CityModal from "@/components/ui/CityModal";
+import { SearchTrainAction } from "../_actions";
 import { WarningModalAuth } from "@/components/ui/WarningModalAuth";
 
 type Props = {
@@ -20,12 +21,12 @@ type Props = {
 const initialState = {
   success: false,
   errors: {},
-  flights: [],
+  train: [],
 };
 
-export default function SearchFlight({ isLoggedIn }: Props) {
+export default function SearchTrain({ isLoggedIn }: Props) {
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [state, formAction] = useActionState(searchFlightAction, initialState);
+  const [state, formAction] = useActionState(SearchTrainAction, initialState);
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [modalType, setModalType] = useState<"origin" | "destination" | null>(
@@ -55,17 +56,18 @@ export default function SearchFlight({ isLoggedIn }: Props) {
 
   return (
     <>
-      <div className="min-h-[60vh] flex items-start justify-center pt-8 sm:pt-16 lg:pt-32 px-4 ">
-        <div className="absolute inset-0 bg-linear-to-br from-blue-500/20 via-purple-500/10 to-pink-500/20 blur-3xl -z-10" />
-        <div className="w-full max-w-3xl mb-10">
+      <div className="min-h-[70vh] flex items-start justify-center pt-8 sm:pt-16 lg:pt-24 px-4">
+        <div className="w-full max-w-3xl">
           <div className="text-center mb-8 sm:mb-10">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-100 mb-3">
-              خرید بلیط
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
+              بلیط قطار
             </h1>
-            <p className="text-gray-500 text-lg">جستجو و خرید آنلاین بلیط</p>
+            <p className="text-gray-500 text-lg">
+              جستجو و خرید آنلاین بلیط قطار
+            </p>
           </div>
 
-          <div className="backdrop-blur-xl bg-white/10 rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm">
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm">
             <form
               action={formAction}
               onSubmit={(e) => {
@@ -80,6 +82,7 @@ export default function SearchFlight({ isLoggedIn }: Props) {
               <input type="hidden" name="tripType" value="one-way" />
 
               <div className="flex items-center gap-2 sm:gap-4 mb-4">
+                {/* Origin */}
                 <div className="flex-1 relative">
                   <div
                     onClick={() => setModalType("origin")}
@@ -102,12 +105,12 @@ export default function SearchFlight({ isLoggedIn }: Props) {
                     `}
                   >
                     <PlaneTakeoff
-                      className={`w-5 h-5 shrink-0 ${origin ? "text-blue-100" : "text-gray-600"}`}
+                      className={`w-5 h-5 shrink-0 ${origin ? "text-blue-500" : "text-gray-400"}`}
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs text-gray-800 mb-0.5">مبدا</div>
+                      <div className="text-xs text-gray-400 mb-0.5">مبدا</div>
                       <div
-                        className={`text-base font-medium truncate ${origin ? "text-gray-900" : "text-gray-600"}`}
+                        className={`text-base font-medium truncate ${origin ? "text-gray-900" : "text-gray-400"}`}
                       >
                         {origin || "شهر مبدا"}
                       </div>
@@ -154,7 +157,7 @@ export default function SearchFlight({ isLoggedIn }: Props) {
                   onClick={handleSwap}
                   className="shrink-0 w-10 h-10 rounded-full border border-gray-200 
                            hover:border-blue-300 hover:bg-blue-50 transition-all duration-200
-                           flex items-center justify-center text-gray-800 hover:text-blue-600"
+                           flex items-center justify-center text-gray-400 hover:text-blue-600"
                 >
                   <ArrowLeftRight className="w-4 h-4" />
                 </button>
@@ -182,12 +185,12 @@ export default function SearchFlight({ isLoggedIn }: Props) {
                     `}
                   >
                     <PlaneLanding
-                      className={`w-5 h-5 shrink-0 ${destination ? "text-blue-500" : "text-gray-600"}`}
+                      className={`w-5 h-5 shrink-0 ${destination ? "text-blue-500" : "text-gray-400"}`}
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs text-gray-800 mb-0.5">مقصد</div>
+                      <div className="text-xs text-gray-400 mb-0.5">مقصد</div>
                       <div
-                        className={`text-base font-medium truncate ${destination ? "text-gray-900" : "text-gray-600"}`}
+                        className={`text-base font-medium truncate ${destination ? "text-gray-900" : "text-gray-400"}`}
                       >
                         {destination || "شهر مقصد"}
                       </div>
@@ -266,14 +269,72 @@ export default function SearchFlight({ isLoggedIn }: Props) {
                 </div>
               </div>
 
+              {/* Search Button */}
               <button
                 type="submit"
-                className="bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300 px-5 py-2 rounded-full transition-all duration-300 cursor-pointer inline-flex items-center gap-2"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold 
+                         py-4 rounded-xl transition-all duration-200 
+                         flex items-center justify-center gap-2 text-base
+                         hover:shadow-lg hover:shadow-blue-500/20"
               >
                 <Search className="w-5 h-5" />
-                <span>جستجوی بلیط </span>
+                <span>جستجوی بلیط هواپیما</span>
               </button>
             </form>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-400">
+            <div className="flex items-center gap-1.5">
+              <svg
+                className="w-4 h-4 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>تضمین بهترین قیمت</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full" />
+            <div className="flex items-center gap-1.5">
+              <svg
+                className="w-4 h-4 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>پشتیبانی ۲۴ ساعته</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full" />
+            <div className="flex items-center gap-1.5">
+              <svg
+                className="w-4 h-4 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>پرداخت امن</span>
+            </div>
           </div>
         </div>
       </div>

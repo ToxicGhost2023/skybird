@@ -9,10 +9,12 @@ export default function HotelsLayout({
   const bannerImages = ["/images/banner/hotel.webp"];
 
   return (
-    <>
+    <main className="  relative">
       <PromoBanner images={bannerImages} />
+      <div className="sticky  z-20 top-0  bg-blue-800/10 backdrop-blur-xs backdrop-grayscale">
         <ServiceNav />
+      </div>
       {children}
-    </>
+    </main>
   );
 }

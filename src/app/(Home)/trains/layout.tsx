@@ -9,10 +9,12 @@ export default function TrainsLayout({
   const bannerImages = ["/images/banner/train.webp"];
 
   return (
-    <>
+    <main className="  relative">
       <PromoBanner images={bannerImages} />
-      <ServiceNav />
+      <div className="sticky  z-20 top-0  bg-blue-800/10 backdrop-blur-xs backdrop-grayscale">
+        <ServiceNav />
+      </div>
       {children}
-    </>
+    </main>
   );
 }
